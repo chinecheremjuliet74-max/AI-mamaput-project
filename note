@@ -1,0 +1,116 @@
+ please design an app using tailwind css and html called mamaput-site with a landing page for an online
+  takeaway Nigerian cooked meal resturant. it will have home section, about section , contact section, menu section, 
+  customer service section , order section and package section. make it professional without javascript.
+
+
+  documentation 
+  Architected comprehensive Nigerian restaurant landing page with seven sectionsArchitected
+   comprehensive Nigerian restaurant landing page with seven sectionsThe user wants a new, 
+   complete landing page called "mamaput-site" for an online takeaway Nigerian restaurant.
+
+    professional HTML + Tailwind CSS only page with all sections:
+
+Home/Hero
+About
+Menu
+Order
+Package
+Customer Service
+Contact
+
+Key constraints:
+
+
+CSS-only interactions (tabs via radio inputs, mobile menu via checkbox hack, etc.)
+Tailwind CSS via CDN
+Professional design
+
+Let me plan the CSS-only tricks:
+
+Mobile nav toggle: checkbox hack with label
+Menu tabs: radio input + label + CSS sibling selectors to show/hide panels based on which tab is selected
+Form interactions: leveraging CSS :focus and :valid states for visual feedback
+Animations: pure CSS keyframes for smooth transitions
+
+I'm designing this with a warm, modern Nigerian food aesthetic that feels inviting and professional. Writing the full HTML structure...
+I'm settling on a color palette with deep forest green, warm palm oil orange, cream backgrounds, gold accents, and dark text for contrast. Since I'm avoiding any JavaScript entirely, I'll rely on the checkbox hack for the mobile menu toggle and CSS :valid/:invalid states for form feedback.
+Writing the complete markup...
+For the interactive menu tabs, I'm using hidden radio inputs paired with labels and content sections that toggle visibility based on the checked state. I need to verify that Tailwind's peer modifiers work properly with the CDN version, especially for named peer variants.
+Actually, I think a safer approach is to use pure CSS with sibling selectors in a style block instead of relying on Tailwind's peer syntax. This way I can target the radio input's checked state and apply styles to the corresponding label and panel content. The key is structuring the HTML so the radios come first, followed by the labels and panels that need to respond to their state.
+
+
+
+DEWEY CLASSIFICATION DOCUMENTATION
+
+1.0 Landing Page
+
+1.1 header Section
+1.1.1 Company Logo
+
+1.2 Navigation Menu 
+1.2.1 home 
+1.2.2 about 
+1.2.3 menu 
+1.2.4 order
+1.2.5 packages
+1.2.6 service 
+1.2.7 contact 
+1.2.8 order
+
+1.3 Search Bar (hambuger) for mobile 
+1.3.1 home
+1.3.2 about
+1.3.3 menu
+1.3.4 order
+1.3.5 package
+1.3.6 service
+1.3.7 contact
+1.3.8 order
+
+2.1  home Section 
+2.1.1 Home Layout
+2.1.2 Home Heading
+2.1.3 Home Description
+2.1.4 menu/order Button
+2.1.5 Home Image
+
+3.1 About section
+3.1.1 about heading
+3.1.2 about description
+3.1.3 about menu/contact Button
+
+4.1 menu section
+4.1.1 menu heading
+4.1.2 menu foods to order
+4.1.3 menu description and prices
+
+5.1 order section
+5.1.1 order heading 
+5.1.2 order description / how to order
+5.1.3 order time and date to order
+
+6.1 Package section
+6.1.1 Packages heading
+6.1.2 Packages imgaes
+6.1.3 Packages description and price for occassions 
+
+7.1 customer service section
+7.1.1 customer heading
+7.1.2 customer review
+7.1.3 customers direction
+
+8.1 contact section 
+8.1.1 contact heading
+8.1.2 contact details
+8.1.3 contact information 
+
+9.1 footer section
+9.1.1 footer copy section
+
+9.1.2 footer navigation 
+9.1.2.1 footer home
+9.1.2.2 footer menu
+9.1.2.3 footer order
+9.1.2.4 footer package
+9.1.2.5 footer service
+9.1.2.6 footer contact

@@ -1,0 +1,905 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MamaPut — Fresh Nigerian Takeaway Online</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;0,900;1,700&family=Inter:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{colors:{
+  forest:{DEFAULT:'#163829',dark:'#0F2A1E',light:'#1E4D38'},
+  pepper:{DEFAULT:'#D94E28',dark:'#AE3C1C',light:'#EF7050'},
+  cream:{DEFAULT:'#FEF8ED',dark:'#F5E8CA'},
+  gold:{DEFAULT:'#F0A500',light:'#FDCF73'},
+  ink:'#1A1209'
+},fontFamily:{
+  display:['"Playfair Display"','serif'],
+  body:['Inter','sans-serif'],
+  brand:['Pacifico','cursive']
+}}}}
+</script>
+<style>
+/* ── base ────────────────────────────────────── */
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#FEF8ED;color:#1A1209}
+::selection{background:#F0A500;color:#1A1209}
+:focus-visible{outline:2px solid #D94E28;outline-offset:3px}
+
+/* ── buttons ─────────────────────────────────── */
+.btn-red{background:#D94E28;color:#FEF8ED;transition:background .2s,transform .15s;font-weight:600}
+.btn-red:hover{background:#AE3C1C;transform:translateY(-1px)}
+.btn-ghost{border:2px solid #163829;color:#163829;transition:background .2s,color .2s;font-weight:600}
+.btn-ghost:hover{background:#163829;color:#FEF8ED}
+.btn-gold{background:#F0A500;color:#1A1209;transition:background .2s;font-weight:700}
+.btn-gold:hover{background:#FDCF73}
+
+/* ── card ────────────────────────────────────── */
+.card{transition:transform .22s,box-shadow .22s}
+.card:hover{transform:translateY(-5px);box-shadow:0 28px 56px rgba(26,18,9,.12)}
+
+/* ── mobile nav (CSS-only checkbox toggle) ───── */
+.nav-chk{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.mob-menu{max-height:0;overflow:hidden;transition:max-height .38s cubic-bezier(.4,0,.2,1)}
+.nav-chk:checked ~ .hdr-shell .mob-menu{max-height:520px}
+/* hamburger bars ─ animate to X */
+.hb{display:block;width:22px;height:2.5px;background:#163829;border-radius:2px;transition:transform .25s,opacity .2s,width .2s}
+.hb2{width:16px}
+.nav-chk:checked ~ .hdr-shell label .hb1{transform:rotate(45deg) translate(3.5px,3.5px)}
+.nav-chk:checked ~ .hdr-shell label .hb2{opacity:0;transform:scaleX(0)}
+.nav-chk:checked ~ .hdr-shell label .hb3{transform:rotate(-45deg) translate(3.5px,-3.5px)}
+
+/* ── CSS-only menu tabs ───────────────────────
+   radio inputs → sibling selectors control
+   .tab-bar active state + .panels visibility   */
+.tab-r{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.tab-lbl{cursor:pointer;border:1.5px solid rgba(254,248,237,.22);color:rgba(254,248,237,.65);transition:background .2s,color .2s,border-color .2s;padding:.5rem 1.25rem;border-radius:9999px;font-size:.8rem;font-weight:600;white-space:nowrap}
+.menu-panel{display:none}
+
+#m1:checked ~ .tab-bar label[for="m1"],
+#m2:checked ~ .tab-bar label[for="m2"],
+#m3:checked ~ .tab-bar label[for="m3"],
+#m4:checked ~ .tab-bar label[for="m4"]{background:#D94E28;color:#FEF8ED;border-color:#D94E28}
+
+#m1:checked ~ .tab-panels .p1,
+#m2:checked ~ .tab-panels .p2,
+#m3:checked ~ .tab-panels .p3,
+#m4:checked ~ .tab-panels .p4{display:grid}
+
+/* ── animations ─────────────────────────────── */
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes floatY2{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes steam{0%{opacity:0;transform:translateY(0) scaleX(1)}25%{opacity:.55}100%{opacity:0;transform:translateY(-48px) scaleX(1.7)}}
+@keyframes spinSlow{to{transform:rotate(360deg)}}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.f1{animation:floatY  4s ease-in-out infinite}
+.f2{animation:floatY2 4s 1.4s ease-in-out infinite}
+.f3{animation:floatY  4s 2.7s ease-in-out infinite}
+.s1{animation:steam 3s ease-in-out infinite}
+.s2{animation:steam 3s .9s ease-in-out infinite}
+.s3{animation:steam 3s 1.8s ease-in-out infinite}
+.spin{animation:spinSlow 22s linear infinite}
+.fade{animation:fadeSlide .7s ease both}
+@media(prefers-reduced-motion:reduce){.f1,.f2,.f3,.s1,.s2,.s3,.spin,.fade{animation:none;opacity:1}}
+
+/* ── details/summary accordion ───────────────── */
+details summary{list-style:none;cursor:pointer;user-select:none}
+details summary::-webkit-details-marker{display:none}
+.acc-plus{font-size:1.4rem;font-weight:300;line-height:1;transition:transform .22s;display:inline-block}
+details[open] .acc-plus{transform:rotate(45deg)}
+details[open]{background:#fff}
+
+/* ── section dividers ────────────────────────── */
+.wave{position:relative}
+.wave::after{content:"";position:absolute;bottom:-1px;left:0;right:0;height:48px;background:var(--next);clip-path:ellipse(55% 100% at 50% 100%)}
+
+/* ── form inputs ─────────────────────────────── */
+.fi{width:100%;border-radius:.75rem;border:1.5px solid rgba(26,18,9,.13);background:#FEF8ED;padding:.7rem 1rem;font-size:.85rem;transition:border-color .2s}
+.fi:focus{outline:none;border-color:#D94E28}
+.fi-dark{background:rgba(22,56,41,.6);border-color:rgba(254,248,237,.15);color:#FEF8ED}
+.fi-dark::placeholder{color:rgba(254,248,237,.3)}
+.fi-dark:focus{border-color:#F0A500}
+select.fi option{background:#FEF8ED;color:#1A1209}
+select.fi-dark option{background:#163829;color:#FEF8ED}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     MOBILE NAV CHECKBOX — must precede .hdr-shell
+═══════════════════════════════════════════════ -->
+<input type="checkbox" id="nav-toggle" class="nav-chk">
+
+<!-- ═══════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════ -->
+<div class="hdr-shell">
+<header class="top-0 inset-x-0 z-50 bg-cream/96 sticky backdrop-blur-md border-b border-ink/8 shadow-sm">
+  <div class="max-w-7xl mx-auto px-5 lg:px-10">
+
+    <!-- top bar -->
+    <div class="h-[4.2rem] flex items-center justify-between gap-4">
+
+      <!-- logo -->
+      <a href="#home" class="flex items-center gap-2.5 shrink-0">
+        <span class="w-9 h-9 rounded-xl bg-pepper flex items-center justify-center shadow-md shadow-pepper/40">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <path d="M10 1C7.2 1 5 3.2 5 6.5V8H3.5v10h13V8H15V6.5C15 3.2 12.8 1 10 1Z" fill="#FEF8ED" opacity=".92"/>
+            <rect x="6.5" y="10" width="7" height="5.5" rx="1" fill="#F0A500" opacity=".85"/>
+          </svg>
+        </span>
+        <span class="font-brand text-[1.25rem] leading-none tracking-tight">
+          <span class="text-forest">Mama</span><span class="text-pepper">Put</span>
+        </span>
+      </a>
+
+      <!-- desktop nav -->
+      <nav class="hidden md:flex items-center gap-5 text-[.82rem] font-medium text-ink/70">
+        <a href="#home"    class="hover:text-pepper transition-colors">Home</a>
+        <a href="#about"   class="hover:text-pepper transition-colors">About</a>
+        <a href="#menu"    class="hover:text-pepper transition-colors">Menu</a>
+        <a href="#order"   class="hover:text-pepper transition-colors">Order</a>
+        <a href="#package" class="hover:text-pepper transition-colors">Packages</a>
+        <a href="#service" class="hover:text-pepper transition-colors">Help</a>
+        <a href="#contact" class="hover:text-pepper transition-colors">Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="#order" class="hidden md:inline-flex btn-red text-sm px-5 py-2.5 rounded-full shadow-md shadow-pepper/25">
+          🛒 Order Now
+        </a>
+        <!-- hamburger label -->
+        <label for="nav-toggle" class="md:hidden p-2 rounded-lg hover:bg-forest/8 cursor-pointer flex flex-col gap-1.5">
+          <span class="hb hb1"></span>
+          <span class="hb hb2"></span>
+          <span class="hb hb3"></span>
+        </label>
+      </div>
+    </div><!-- /top bar -->
+
+    <!-- mobile menu -->
+    <div class="mob-menu md:hidden">
+      <nav class="border-t border-ink/10 py-4 flex flex-col gap-0.5">
+        <a href="#home"    class="px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-pepper/8 hover:text-pepper transition-colors">🏠 Home</a>
+        <a href="#about"   class="px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-pepper/8 hover:text-pepper transition-colors">📖 About Us</a>
+        <a href="#menu"    class="px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-pepper/8 hover:text-pepper transition-colors">🍲 Menu</a>
+        <a href="#order"   class="px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-pepper/8 hover:text-pepper transition-colors">📦 Place an Order</a>
+        <a href="#package" class="px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-pepper/8 hover:text-pepper transition-colors">🎁 Packages</a>
+        <a href="#service" class="px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-pepper/8 hover:text-pepper transition-colors">🛟 Customer Help</a>
+        <a href="#contact" class="px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-pepper/8 hover:text-pepper transition-colors">📍 Contact</a>
+        <a href="#order"   class="mt-2 mx-2 btn-red text-sm py-3 rounded-full text-center shadow-md">🛒 Order Now</a>
+      </nav>
+    </div><!-- /mobile menu -->
+
+  </div>
+</header>
+</div><!-- /hdr-shell -->
+
+
+<!-- ═══════════════════════════════════════════════
+     1 · HOME / HERO
+═══════════════════════════════════════════════ -->
+<section id="home" class="pt-28 md:pt-36 pb-20 px-5 lg:px-10" style="background:linear-gradient(145deg,#FEF8ED 0%,#F5E8CA 100%)">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-14 items-center">
+
+    <!-- ── left: copy ── -->
+    <div class="fade">
+      <span class="inline-flex items-center gap-2 bg-gold/15 border border-gold/35 text-amber-700 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-5">
+        🔥 Nigeria's favourite buka, now delivering to your door
+      </span>
+      <h1 class="font-display font-black text-[2.6rem] sm:text-5xl lg:text-[3.4rem] leading-[1.07] tracking-tight text-ink">
+        Order Fresh<br>Nigerian Meals<br><span class="text-pepper italic">Delivered Hot.</span>
+      </h1>
+      <p class="mt-5 text-[.95rem] text-ink/62 leading-relaxed max-w-md">
+        From mama's hand-pounded egusi to party jollof rice — choose your dish, place your order online, and our riders bring it steaming to your doorstep.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="#menu"  class="btn-red px-6 py-3.5 rounded-full text-sm shadow-lg shadow-pepper/30">Browse Menu →</a>
+        <a href="#order" class="btn-ghost px-6 py-3.5 rounded-full text-sm">Place an Order</a>
+      </div>
+      <!-- trust row -->
+      <div class="mt-10 flex flex-wrap gap-5 text-[.78rem] text-ink/55">
+        <div class="flex items-center gap-1.5"><span class="text-gold">★★★★★</span> 4.9 / 5</div>
+        <div class="w-px h-4 bg-ink/15 self-center"></div>
+        <div>🚀 30-min delivery</div>
+        <div class="w-px h-4 bg-ink/15 self-center"></div>
+        <div>🍲 40+ dishes</div>
+        <div class="w-px h-4 bg-ink/15 self-center"></div>
+        <div>📍 EnuguCity</div>
+      </div>
+    </div>
+
+    <!-- ── right: illustration ── --> 
+    <div class="relative flex items-center justify-center min-h-[320px]">
+      
+      <!-- orbit ring -->
+      <div class="absolute w-72 h-72 md:w-80 md:h-80 rounded-full border-2 border-dashed border-pepper/18 spin">
+        <img class="border-2 rounded-full w-72 h-72 md:w-80 md:h-80" src="https://i.pinimg.com/736x/f4/e8/ca/f4e8ca09aa8258e0fe33ba8a300ab715.jpg" alt="">
+      </div>
+      <!-- main pot SVG -->
+      
+      <!-- floating dish badges -->
+      <div class="absolute top-2 right-0 md:-right-4 bg-cream border border-pepper/20 rounded-2xl px-3.5 py-2.5 shadow-xl text-xs font-semibold f2 z-20">
+        🍲 Egusi Soup<br><span class="text-pepper font-bold text-sm">₦2,500</span>
+      </div>
+      <div class="absolute bottom-8 right-2 md:right-0 bg-cream border border-pepper/20 rounded-2xl px-3.5 py-2.5 shadow-xl text-xs font-semibold f1 z-20">
+        🍚 Jollof Rice<br><span class="text-pepper font-bold text-sm">₦1,800</span>
+      </div>
+      <div class="absolute top-14 left-0 md:-left-4 bg-cream border border-pepper/20 rounded-2xl px-3.5 py-2.5 shadow-xl text-xs font-semibold f3 z-20">
+        🍗 Grilled Chicken<br><span class="text-pepper font-bold text-sm">₦1,500</span>
+      </div>
+    </div><!-- /right -->
+
+  </div>
+
+  <!-- stat strip -->
+  <div class="max-w-7xl mx-auto mt-14">
+    <div class="bg-forest rounded-2xl px-6 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div><p class="font-display font-black text-2xl md:text-3xl text-gold">14+</p><p class="text-cream/60 text-xs mt-1">Years Cooking</p></div>
+      <div><p class="font-display font-black text-2xl md:text-3xl text-gold">40+</p><p class="text-cream/60 text-xs mt-1">Nigerian Dishes</p></div>
+      <div><p class="font-display font-black text-2xl md:text-3xl text-gold">30min</p><p class="text-cream/60 text-xs mt-1">Avg. Delivery</p></div>
+      <div><p class="font-display font-black text-2xl md:text-3xl text-gold">25k+</p><p class="text-cream/60 text-xs mt-1">Happy Customers</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     2 · ABOUT
+═══════════════════════════════════════════════ -->
+<section id="about" class="py-20 md:py-28 px-5 lg:px-10 bg-forest text-cream">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-14 items-center">
+
+    <!-- story -->
+    <div>
+      <p class="text-gold text-xs font-semibold uppercase tracking-widest mb-3">Our Story</p>
+      <h2 class="font-display font-bold text-3xl md:text-[2.6rem] leading-snug">
+        From one roadside pot to<br>your doorstep — <span class="italic text-gold">every day.</span>
+      </h2>
+      <p class="mt-5 text-cream/70 leading-relaxed text-sm">
+        MamaPut started in 2011 with one firewood stove, one bench, and a pot of egusi that sold out before noon. Neighbours would shout — <em>"Mama, put my food!"</em> — and the name stuck.
+      </p>
+      <p class="mt-4 text-cream/70 leading-relaxed text-sm">
+        Today we run three kitchens across Benin City with a dedicated delivery fleet. Order from your phone and our riders bring the same soul-food magic straight to you — no cold food, no compromise.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="#menu"    class="btn-gold px-5 py-3 rounded-full text-sm">See Our Menu</a>
+        <a href="#contact" class="border border-cream/35 text-cream font-semibold px-5 py-3 rounded-full text-sm hover:bg-cream/10 transition-colors">Get in Touch</a>
+      </div>
+    </div>
+
+    <!-- value cards 2×2 -->
+    <div class="grid grid-cols-2 gap-4">
+      <div class="bg-forest-dark rounded-2xl p-5 border border-cream/8 card">
+        <div class="text-3xl mb-3">🔥</div>
+        <h3 class="font-display font-bold text-[.95rem] mb-1">Cooked Fresh Daily</h3>
+        <p class="text-cream/55 text-xs leading-relaxed">Pots go on at 6am. Nothing is reheated — ever.</p>
+      </div>
+      <div class="bg-forest-dark rounded-2xl p-5 border border-cream/8 card">
+        <div class="text-3xl mb-3">🚀</div>
+        <h3 class="font-display font-bold text-[.95rem] mb-1">Fast Delivery</h3>
+        <p class="text-cream/55 text-xs leading-relaxed">Insulated bags keep your food piping hot door to door.</p>
+      </div>
+      <div class="bg-forest-dark rounded-2xl p-5 border border-cream/8 card">
+        <div class="text-3xl mb-3">🌿</div>
+        <h3 class="font-display font-bold text-[.95rem] mb-1">100% Natural</h3>
+        <p class="text-cream/55 text-xs leading-relaxed">Palm oil, iru, crayfish, fresh leaves — no artificial flavours.</p>
+      </div>
+      <div class="bg-forest-dark rounded-2xl p-5 border border-cream/8 card">
+        <div class="text-3xl mb-3">❤️</div>
+        <h3 class="font-display font-bold text-[.95rem] mb-1">Cooked with Love</h3>
+        <p class="text-cream/55 text-xs leading-relaxed">Family recipes, passed down and cooked with intention.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     3 · MENU  (CSS-only tabs)
+═══════════════════════════════════════════════ -->
+<section id="menu" class="py-20 md:py-28 px-5 lg:px-10" style="background:#152F22">
+  <div class="max-w-5xl mx-auto">
+    <p class="text-gold text-xs font-semibold uppercase tracking-widest text-center mb-2">Today's Menu</p>
+    <h2 class="font-display font-bold text-3xl md:text-4xl text-cream text-center">What's simmering today</h2>
+    <p class="text-cream/45 text-center mt-2 text-xs">Fresh pots every morning · prices include packaging</p>
+
+    <!-- ── CSS-ONLY TAB SYSTEM ── -->
+    <!-- radios, .tab-bar, .tab-panels are SIBLINGS inside this div so ~ selector works -->
+    <div class="mt-10">
+      <input type="radio" id="m1" name="menutab" class="tab-r" checked>
+      <input type="radio" id="m2" name="menutab" class="tab-r">
+      <input type="radio" id="m3" name="menutab" class="tab-r">
+      <input type="radio" id="m4" name="menutab" class="tab-r">
+
+      <!-- tab labels -->
+      <div class="tab-bar flex flex-wrap justify-center gap-2">
+        <label for="m1" class="tab-lbl">🍲 Soups &amp; Stews</label>
+        <label for="m2" class="tab-lbl">🍚 Rice &amp; Swallow</label>
+        <label for="m3" class="tab-lbl">🍗 Proteins &amp; Sides</label>
+        <label for="m4" class="tab-lbl">🥤 Drinks</label>
+      </div>
+
+      <!-- tab panels -->
+      <div class="tab-panels mt-8">
+
+        <!-- SOUPS -->
+        <div class="menu-panel p1 grid sm:grid-cols-2 gap-3">
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Egusi Soup</p><p class="text-cream/40 text-xs mt-0.5">Melon seeds, iru, assorted</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦2,500</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Banga Soup</p><p class="text-cream/40 text-xs mt-0.5">Palm fruit, ofor, ede</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦3,000</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Ogbono Soup</p><p class="text-cream/40 text-xs mt-0.5">Draw soup, assorted meat</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦2,700</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Afang Soup</p><p class="text-cream/40 text-xs mt-0.5">Afang leaves, waterleaf, crayfish</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦3,200</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Edikaikong</p><p class="text-cream/40 text-xs mt-0.5">Ugwu, waterleaf, seafood</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦3,500</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Goat Pepper Soup</p><p class="text-cream/40 text-xs mt-0.5">Fresh goat, uziza, uda</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦3,800</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Ofe Owerri</p><p class="text-cream/40 text-xs mt-0.5">Ọha leaves, cocoyam, stock</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦3,500</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Vegetable Soup</p><p class="text-cream/40 text-xs mt-0.5">Mixed greens, stockfish, beef</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦2,800</span>
+          </div>
+        </div>
+
+        <!-- RICE & SWALLOW -->
+        <div class="menu-panel p2 grid sm:grid-cols-2 gap-3">
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Party Jollof Rice</p><p class="text-cream/40 text-xs mt-0.5">Firewood-smoked, Nigerian style</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦1,800</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Ofada Rice &amp; Sauce</p><p class="text-cream/40 text-xs mt-0.5">Local brown rice, ayamase stew</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦2,600</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Fried Rice</p><p class="text-cream/40 text-xs mt-0.5">Veggies, liver, shrimps</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦1,900</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Pounded Yam</p><p class="text-cream/40 text-xs mt-0.5">Hand-pounded, per wrap</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦700</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Eba (Garri)</p><p class="text-cream/40 text-xs mt-0.5">Yellow or white, per wrap</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦500</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Semovita</p><p class="text-cream/40 text-xs mt-0.5">Smooth, per wrap</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦500</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Amala</p><p class="text-cream/40 text-xs mt-0.5">Yam flour, dark &amp; stretchy</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦500</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Tuwo Shinkafa</p><p class="text-cream/40 text-xs mt-0.5">Northern rice swallow</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦500</span>
+          </div>
+        </div>
+
+        <!-- PROTEINS & SIDES -->
+        <div class="menu-panel p3 grid sm:grid-cols-2 gap-3">
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Grilled Chicken</p><p class="text-cream/40 text-xs mt-0.5">Half piece, peppered</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦1,500</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Assorted Beef</p><p class="text-cream/40 text-xs mt-0.5">Shaki, ponmo, brisket</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦1,200</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Suya (2 skewers)</p><p class="text-cream/40 text-xs mt-0.5">Hausa-style, groundnut spice</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦1,000</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Smoked Fish</p><p class="text-cream/40 text-xs mt-0.5">Titus or catfish</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦1,000</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Moi Moi</p><p class="text-cream/40 text-xs mt-0.5">Steamed with egg &amp; fish</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦600</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Fried Plantain (Dodo)</p><p class="text-cream/40 text-xs mt-0.5">Ripe, golden, per portion</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦500</span>
+          </div>
+        </div>
+
+        <!-- DRINKS -->
+        <div class="menu-panel p4 grid sm:grid-cols-2 gap-3">
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Chapman</p><p class="text-cream/40 text-xs mt-0.5">Nigerian classic cocktail</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦1,200</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Zobo Drink</p><p class="text-cream/40 text-xs mt-0.5">Hibiscus, ginger, chilled</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦500</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Kunu</p><p class="text-cream/40 text-xs mt-0.5">Spiced millet drink</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦500</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Palm Wine (cup)</p><p class="text-cream/40 text-xs mt-0.5">Fresh-tapped, sweet</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦600</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Tiger Nut Milk</p><p class="text-cream/40 text-xs mt-0.5">Chilled, naturally sweet</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦700</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3.5 border border-cream/8 transition-colors">
+            <div><p class="text-cream font-medium text-sm">Chilled Soft Drink</p><p class="text-cream/40 text-xs mt-0.5">Coke, Fanta, Sprite, Malt</p></div>
+            <span class="text-gold font-bold font-display text-[1rem] ml-4 shrink-0">₦400</span>
+          </div>
+        </div>
+
+      </div><!-- /tab-panels -->
+    </div><!-- /tab wrapper -->
+
+    <p class="text-center text-cream/30 text-xs mt-8">Free delivery on orders above ₦5,000 · Prices may vary by location</p>
+    <div class="text-center mt-6">
+      <a href="#order" class="inline-flex btn-red text-sm px-8 py-3.5 rounded-full shadow-lg shadow-pepper/30">Order from This Menu →</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     4 · ORDER
+═══════════════════════════════════════════════ -->
+<section id="order" class="py-20 md:py-28 px-5 lg:px-10 bg-cream">
+  <div class="max-w-7xl mx-auto">
+    <p class="text-pepper text-xs font-semibold uppercase tracking-widest text-center mb-2">Place Your Order</p>
+    <h2 class="font-display font-bold text-3xl md:text-4xl text-center">Hot food in 3 simple steps</h2>
+    <p class="text-ink/50 text-center mt-2 text-sm max-w-sm mx-auto">No app needed. Fill the form — our team confirms within minutes.</p>
+
+    <!-- steps -->
+    <div class="mt-12 grid md:grid-cols-3 gap-6 text-center mb-14">
+      <div class="bg-white rounded-2xl p-7 border border-ink/8 card">
+        <div class="w-14 h-14 bg-pepper/10 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">🍲</div>
+        <span class="inline-block bg-pepper text-cream text-xs font-bold px-2.5 py-0.5 rounded-full mb-3">Step 1</span>
+        <h3 class="font-display font-bold text-lg">Choose Your Meal</h3>
+        <p class="text-ink/55 text-sm mt-2 leading-relaxed">Browse the menu above. Pick your soup, swallow and protein combination.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-7 border border-ink/8 card">
+        <div class="w-14 h-14 bg-pepper/10 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">📝</div>
+        <span class="inline-block bg-pepper text-cream text-xs font-bold px-2.5 py-0.5 rounded-full mb-3">Step 2</span>
+        <h3 class="font-display font-bold text-lg">Fill the Order Form</h3>
+        <p class="text-ink/55 text-sm mt-2 leading-relaxed">Enter your name, number, address and your meal details in the form below.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-7 border border-ink/8 card">
+        <div class="w-14 h-14 bg-pepper/10 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">🚀</div>
+        <span class="inline-block bg-pepper text-cream text-xs font-bold px-2.5 py-0.5 rounded-full mb-3">Step 3</span>
+        <h3 class="font-display font-bold text-lg">We Deliver Hot</h3>
+        <p class="text-ink/55 text-sm mt-2 leading-relaxed">We confirm by call, pack it fresh, and our rider brings it hot to your door.</p>
+      </div>
+    </div>
+
+    <!-- order form -->
+    <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl shadow-ink/8 border border-ink/5 p-8 md:p-10">
+      <div class="flex items-center gap-3 mb-7">
+        <span class="text-2xl">📦</span>
+        <h3 class="font-display font-bold text-2xl">Place Your Order</h3>
+      </div>
+      <form action="mailto:orders@mamaput.ng" method="get" enctype="text/plain" class="space-y-5">
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="on" class="block text-xs font-semibold mb-1.5 text-ink/70">Full Name <span class="text-pepper">*</span></label>
+            <input id="on" name="name" type="text" required placeholder="e.g. Chidi Okafor" class="fi">
+          </div>
+          <div>
+            <label for="op" class="block text-xs font-semibold mb-1.5 text-ink/70">Phone Number <span class="text-pepper">*</span></label>
+            <input id="op" name="phone" type="tel" required placeholder="080 1234 5678" class="fi">
+          </div>
+        </div>
+        <div>
+          <label for="oa" class="block text-xs font-semibold mb-1.5 text-ink/70">Delivery Address <span class="text-pepper">*</span></label>
+          <input id="oa" name="address" type="text" required placeholder="Street, area, nearest landmark..." class="fi">
+        </div>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="ot" class="block text-xs font-semibold mb-1.5 text-ink/70">Preferred Delivery Time</label>
+            <select id="ot" name="time" class="fi">
+              <option>As soon as possible</option>
+              <option>12:00 PM – 1:00 PM</option>
+              <option>1:00 PM – 2:00 PM</option>
+              <option>2:00 PM – 3:00 PM</option>
+              <option>5:00 PM – 6:00 PM</option>
+              <option>6:00 PM – 7:00 PM</option>
+            </select>
+          </div>
+          <div>
+            <label for="os" class="block text-xs font-semibold mb-1.5 text-ink/70">Number of Servings</label>
+            <select id="os" name="servings" class="fi">
+              <option>1 person</option>
+              <option>2 persons</option>
+              <option>3 persons</option>
+              <option>4 persons</option>
+              <option>5+ persons</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label for="om" class="block text-xs font-semibold mb-1.5 text-ink/70">Your Meal Order <span class="text-pepper">*</span></label>
+          <textarea id="om" name="order" rows="4" required placeholder="e.g. 2× Egusi Soup + Pounded Yam, 1× Jollof Rice + Grilled Chicken..." class="fi resize-none"></textarea>
+        </div>
+        <div>
+          <label for="ox" class="block text-xs font-semibold mb-1.5 text-ink/70">Special Notes (optional)</label>
+          <input id="ox" name="notes" type="text" placeholder="Less pepper, extra meat, allergy info..." class="fi">
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 pt-1">
+          <button type="submit" class="flex-1 btn-red py-4 rounded-full text-sm shadow-lg shadow-pepper/30">
+            📧 Submit Order by Email
+          </button>
+          <a href="https://wa.me/2348030000000?text=Hello%20MamaPut!%20I'd%20like%20to%20place%20an%20order."
+             class="flex-1 flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold py-4 rounded-full text-sm hover:bg-[#1eba57] transition-colors shadow-lg">
+            💬 Order via WhatsApp
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     5 · PACKAGES
+═══════════════════════════════════════════════ -->
+<section id="package" class="py-20 md:py-28 px-5 lg:px-10 bg-cream-dark">
+  <div class="max-w-7xl mx-auto">
+    <p class="text-pepper text-xs font-semibold uppercase tracking-widest text-center mb-2">Meal Packages</p>
+    <h2 class="font-display font-bold text-3xl md:text-4xl text-center">Built for every appetite</h2>
+    <p class="text-ink/50 text-center mt-2 text-sm">One person or five hundred — we have a plan for you.</p>
+
+    <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <!-- Daily Solo -->
+      <div class="card bg-white rounded-3xl border border-ink/8 p-7 flex flex-col">
+        <div class="text-3xl mb-3">🍽️</div>
+        <h3 class="font-display font-bold text-xl">Daily Solo</h3>
+        <p class="text-ink/50 text-xs mt-0.5">One hungry person</p>
+        <p class="font-display font-black text-3xl mt-5 text-ink">₦1,800<span class="text-sm font-normal text-ink/40"> / meal</span></p>
+        <ul class="mt-5 space-y-2 text-xs text-ink/65 flex-1">
+          <li class="flex gap-2"><span class="text-forest font-bold">✓</span>1 swallow + soup of the day</li>
+          <li class="flex gap-2"><span class="text-forest font-bold">✓</span>1 protein of choice</li>
+          <li class="flex gap-2"><span class="text-forest font-bold">✓</span>Delivered by 1pm</li>
+          <li class="flex gap-2"><span class="text-forest font-bold">✓</span>Swap meal daily</li>
+        </ul>
+        <a href="#order" class="mt-6 block text-center btn-ghost text-sm py-3 rounded-full">Get Started</a>
+      </div>
+
+      <!-- Family Weekly — FEATURED -->
+      <div class="card bg-forest text-cream rounded-3xl p-7 flex flex-col relative shadow-2xl shadow-forest/25 lg:-translate-y-3">
+        <span class="absolute -top-3.5 left-6 bg-gold text-ink text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wide">Best Value</span>
+        <div class="text-3xl mb-3">👨‍👩‍👧‍👦</div>
+        <h3 class="font-display font-bold text-xl">Family Weekly</h3>
+        <p class="text-cream/50 text-xs mt-0.5">Household of 4, 7 days</p>
+        <p class="font-display font-black text-3xl mt-5 text-gold">₦22,000<span class="text-sm font-normal text-cream/40"> / week</span></p>
+        <ul class="mt-5 space-y-2 text-xs text-cream/75 flex-1">
+          <li class="flex gap-2"><span class="text-gold font-bold">✓</span>Daily soups + swallow for 7 days</li>
+          <li class="flex gap-2"><span class="text-gold font-bold">✓</span>One protein upgrade included</li>
+          <li class="flex gap-2"><span class="text-gold font-bold">✓</span>Free delivery all week</li>
+          <li class="flex gap-2"><span class="text-gold font-bold">✓</span>Pick your weekly menu on Sunday</li>
+          <li class="flex gap-2"><span class="text-gold font-bold">✓</span>Priority rider dispatch</li>
+        </ul>
+        <a href="#order" class="mt-6 block text-center btn-gold text-sm py-3 rounded-full">Choose Plan</a>
+      </div>
+
+      <!-- Office Catering -->
+      <div class="card bg-white rounded-3xl border border-ink/8 p-7 flex flex-col">
+        <div class="text-3xl mb-3">🏢</div>
+        <h3 class="font-display font-bold text-xl">Office Catering</h3>
+        <p class="text-ink/50 text-xs mt-0.5">10+ staff, weekday lunch</p>
+        <p class="font-display font-black text-3xl mt-5 text-ink">₦2,200<span class="text-sm font-normal text-ink/40"> / head</span></p>
+        <ul class="mt-5 space-y-2 text-xs text-ink/65 flex-1">
+          <li class="flex gap-2"><span class="text-forest font-bold">✓</span>Rotating weekly menu</li>
+          <li class="flex gap-2"><span class="text-forest font-bold">✓</span>Monthly consolidated invoice</li>
+          <li class="flex gap-2"><span class="text-forest font-bold">✓</span>Dedicated daily delivery slot</li>
+          <li class="flex gap-2"><span class="text-forest font-bold">✓</span>Dietary preferences tracked</li>
+        </ul>
+        <a href="#contact" class="mt-6 block text-center btn-ghost text-sm py-3 rounded-full">Get a Quote</a>
+      </div>
+
+      <!-- Owambe / Event -->
+      <div class="card bg-white rounded-3xl border border-ink/8 p-7 flex flex-col">
+        <div class="text-3xl mb-3">🎉</div>
+        <h3 class="font-display font-bold text-xl">Owambe / Event</h3>
+        <p class="text-ink/50 text-xs mt-0.5">100+ guests</p>
+        <p class="font-display font-black text-3xl mt-5 text-ink">Custom</p>
+        <ul class="mt-5 space-y-2 text-xs text-ink/65 flex-1">
+          <li class="flex gap-2"><span class="text-forest font-bold">✓</span>Full tasting session included</li>
+          <li class="flex gap-2"><span class="text-forest font-bold">✓</span>On-site cooks &amp; servers</li>
+          <li class="flex gap-2"><span class="text-forest font-bold">✓</span>Setup, plating &amp; cleanup</li>
+          <li class="flex gap-2"><span class="text-forest font-bold">✓</span>Custom menu design</li>
+        </ul>
+        <a href="#contact" class="mt-6 block text-center btn-ghost text-sm py-3 rounded-full">Get a Quote</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     6 · CUSTOMER SERVICE
+═══════════════════════════════════════════════ -->
+<section id="service" class="py-20 md:py-28 px-5 lg:px-10 bg-cream">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-14">
+
+    <!-- support channels -->
+    <div>
+      <p class="text-pepper text-xs font-semibold uppercase tracking-widest mb-2">Customer Service</p>
+      <h2 class="font-display font-bold text-3xl md:text-4xl leading-snug">
+        We're here<br>whenever you need us.
+      </h2>
+      <p class="text-ink/55 mt-4 text-sm leading-relaxed max-w-sm">
+        Wrong order? Late delivery? Quality concern? Reach us immediately — we respond within 5 minutes during business hours.
+      </p>
+
+      <div class="mt-8 space-y-3">
+        <a href="https://wa.me/2348030000000"
+           class="flex items-center gap-4 bg-[#25D366]/10 border border-[#25D366]/25 rounded-2xl px-5 py-4 hover:bg-[#25D366]/18 transition-colors">
+          <span class="text-2xl">💬</span>
+          <div class="flex-1">
+            <p class="font-semibold text-sm">WhatsApp Support</p>
+            <p class="text-ink/50 text-xs mt-0.5">+234 814 921 4232 · Instant reply</p>
+          </div>
+          <span class="text-ink/25 text-xl font-light">→</span>
+        </a>
+        <a href="tel:+2348030000000"
+           class="flex items-center gap-4 bg-forest/8 border border-forest/15 rounded-2xl px-5 py-4 hover:bg-forest/12 transition-colors">
+          <span class="text-2xl">📞</span>
+          <div class="flex-1">
+            <p class="font-semibold text-sm">Call Us Direct</p>
+            <p class="text-ink/50 text-xs mt-0.5">+234 814 921 4232 · Mon–Sat 7am–9pm</p>
+          </div>
+          <span class="text-ink/25 text-xl font-light">→</span>
+        </a>
+        <a href="mailto:hello@mamaput.ng"
+           class="flex items-center gap-4 bg-pepper/8 border border-pepper/15 rounded-2xl px-5 py-4 hover:bg-pepper/12 transition-colors">
+          <span class="text-2xl">✉️</span>
+          <div class="flex-1">
+            <p class="font-semibold text-sm">Email Support</p>
+            <p class="text-ink/50 text-xs mt-0.5">hello@mamaput.ng · Reply within 1hr</p>
+          </div>
+          <span class="text-ink/25 text-xl font-light">→</span>
+        </a>
+      </div>
+
+      <!-- delivery info box -->
+      <div class="mt-8 bg-cream-dark rounded-2xl p-5 border border-ink/10">
+        <h4 class="font-bold text-sm mb-3 flex items-center gap-2">📦 Delivery Information</h4>
+        <ul class="space-y-1.5 text-xs text-ink/60 leading-relaxed">
+          <li>· Delivery radius: 15 km from nearest outlet</li>
+          <li>· Average delivery time: 25–40 minutes</li>
+          <li>· Free delivery on orders above <strong>₦5,000</strong></li>
+          <li>· Delivery fee: ₦500–₦1,200 based on distance</li>
+          <li>· Hours: Mon–Sat 7am–9pm · Sun 9am–7pm</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FAQ accordion — CSS-only via native <details>/<summary> -->
+    <div>
+      <h3 class="font-display font-bold text-2xl mb-6">Frequently Asked Questions</h3>
+      <div class="space-y-2.5">
+
+        <details class="bg-white border border-ink/10 rounded-2xl overflow-hidden transition-colors">
+          <summary class="flex items-center justify-between px-5 py-4 font-semibold text-sm gap-4">
+            How do I place an order?
+            <span class="acc-plus text-pepper shrink-0">+</span>
+          </summary>
+          <p class="px-5 pb-4 text-xs text-ink/60 leading-relaxed">Fill in the order form in the Order section above, or message us on WhatsApp with your meal, name, address and preferred delivery time. Our team will confirm and dispatch right away.</p>
+        </details>
+
+        <details class="bg-white border border-ink/10 rounded-2xl overflow-hidden transition-colors">
+          <summary class="flex items-center justify-between px-5 py-4 font-semibold text-sm gap-4">
+            How long does delivery take?
+            <span class="acc-plus text-pepper shrink-0">+</span>
+          </summary>
+          <p class="px-5 pb-4 text-xs text-ink/60 leading-relaxed">Most deliveries arrive within 25–40 minutes of order confirmation. During peak hours (12pm–2pm and 6pm–8pm) allow up to 50 minutes. We always call ahead if there's any delay.</p>
+        </details>
+
+        <details class="bg-white border border-ink/10 rounded-2xl overflow-hidden transition-colors">
+          <summary class="flex items-center justify-between px-5 py-4 font-semibold text-sm gap-4">
+            Can I customise my meal?
+            <span class="acc-plus text-pepper shrink-0">+</span>
+          </summary>
+          <p class="px-5 pb-4 text-xs text-ink/60 leading-relaxed">Yes! Use the special notes field — less pepper, no onions, extra meat, specific combinations. We accommodate dietary preferences wherever possible.</p>
+        </details>
+
+        <details class="bg-white border border-ink/10 rounded-2xl overflow-hidden transition-colors">
+          <summary class="flex items-center justify-between px-5 py-4 font-semibold text-sm gap-4">
+            What payment methods do you accept?
+            <span class="acc-plus text-pepper shrink-0">+</span>
+          </summary>
+          <p class="px-5 pb-4 text-xs text-ink/60 leading-relaxed">Cash on delivery, bank transfer, and POS on delivery. For office and event packages we issue invoices for bank transfer. Account details are sent at order confirmation.</p>
+        </details>
+
+        <details class="bg-white border border-ink/10 rounded-2xl overflow-hidden transition-colors">
+          <summary class="flex items-center justify-between px-5 py-4 font-semibold text-sm gap-4">
+            What if my order is wrong or arrives cold?
+            <span class="acc-plus text-pepper shrink-0">+</span>
+          </summary>
+          <p class="px-5 pb-4 text-xs text-ink/60 leading-relaxed">Contact us immediately via WhatsApp or phone. If your order was incorrect or quality was unsatisfactory, we will resend or issue a full credit toward your next order — no questions asked.</p>
+        </details>
+
+        <details class="bg-white border border-ink/10 rounded-2xl overflow-hidden transition-colors">
+          <summary class="flex items-center justify-between px-5 py-4 font-semibold text-sm gap-4">
+            Do you handle large event catering?
+            <span class="acc-plus text-pepper shrink-0">+</span>
+          </summary>
+          <p class="px-5 pb-4 text-xs text-ink/60 leading-relaxed">Absolutely. We've catered for events from 50 to 800 guests — weddings, burials, office launches and corporate dinners. Contact us at least 5 days before the event for large bookings.</p>
+        </details>
+
+        <details class="bg-white border border-ink/10 rounded-2xl overflow-hidden transition-colors">
+          <summary class="flex items-center justify-between px-5 py-4 font-semibold text-sm gap-4">
+            Are your ingredients fresh and natural?
+            <span class="acc-plus text-pepper shrink-0">+</span>
+          </summary>
+          <p class="px-5 pb-4 text-xs text-ink/60 leading-relaxed">100%. We use fresh palm oil, real iru (locust beans), whole crayfish, and freshly sourced leaves and proteins every morning. No artificial flavourings, no preservatives.</p>
+        </details>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     7 · CONTACT
+═══════════════════════════════════════════════ -->
+<section id="contact" class="py-20 md:py-28 px-5 lg:px-10 bg-forest text-cream">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-14 items-start">
+
+    <!-- info -->
+    <div>
+      <p class="text-gold text-xs font-semibold uppercase tracking-widest mb-2">Find Us</p>
+      <h2 class="font-display font-bold text-3xl md:text-4xl leading-snug">
+        Come hungry.<br><span class="italic text-gold">Leave full.</span>
+      </h2>
+      <p class="text-cream/60 mt-4 text-sm leading-relaxed max-w-sm">
+        Three kitchens across Enugu City, each serving the same pots, same love, same Mama.
+      </p>
+
+      <div class="mt-8 space-y-5 text-sm">
+        <div class="flex gap-4">
+          <span class="text-xl shrink-0">📍</span>
+          <div>
+            <p class="font-semibold text-[.9rem]">Main Kitchen · Neche Road</p>
+            <p class="text-cream/50 text-xs mt-0.5">14 Neche Road, Enugu City, Enugu State</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <span class="text-xl shrink-0">📍</span>
+          <div>
+            <p class="font-semibold text-[.9rem]">Branch 2 · Uselu</p>
+            <p class="text-cream/50 text-xs mt-0.5">7 Uselu–Lagos Road, Enugu City</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <span class="text-xl shrink-0">📍</span>
+          <div>
+            <p class="font-semibold text-[.9rem]">Branch 3 · GRA</p>
+            <p class="text-cream/50 text-xs mt-0.5">22 Neche Road, GRA, Enugu City</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <span class="text-xl shrink-0">🕐</span>
+          <div>
+            <p class="font-semibold text-[.9rem]">Opening Hours</p>
+            <p class="text-cream/50 text-xs mt-0.5">Mon–Sat: 7:00am – 9:00pm</p>
+            <p class="text-cream/50 text-xs">Sunday: 9:00am – 7:00pm</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <span class="text-xl shrink-0">📞</span>
+          <div>
+            <p class="font-semibold text-[.9rem]">Phone &amp; WhatsApp</p>
+            <p class="text-cream/50 text-xs mt-0.5">+234 814 921 4232</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <span class="text-xl shrink-0">✉️</span>
+          <div>
+            <p class="font-semibold text-[.9rem]">Email</p>
+            <p class="text-cream/50 text-xs mt-0.5">hello@mamaput.ng</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- social links -->
+      <div class="mt-8 flex gap-3">
+        <a href="#" title="Instagram" class="w-10 h-10 bg-cream/10 hover:bg-cream/20 rounded-full flex items-center justify-center transition-colors text-base">📸</a>
+        <a href="#" title="Facebook"  class="w-10 h-10 bg-cream/10 hover:bg-cream/20 rounded-full flex items-center justify-center transition-colors text-base">📘</a>
+        <a href="https://wa.me/2348030000000" title="WhatsApp" class="w-10 h-10 bg-cream/10 hover:bg-cream/20 rounded-full flex items-center justify-center transition-colors text-base">💬</a>
+        <a href="#" title="TikTok"    class="w-10 h-10 bg-cream/10 hover:bg-cream/20 rounded-full flex items-center justify-center transition-colors text-base">🎵</a>
+      </div>
+    </div>
+
+    <!-- contact form -->
+    <div class="bg-forest-dark rounded-3xl p-7 md:p-9 border border-cream/10">
+      <h3 class="font-display font-bold text-xl mb-6">Send us a message</h3>
+      <form action="mailto:hello@mamaput.ng" method="get" enctype="text/plain" class="space-y-4">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label for="cn" class="block text-xs font-medium text-cream/65 mb-1.5">Your Name</label>
+            <input id="cn" name="name" type="text" required placeholder="Full name" class="fi fi-dark">
+          </div>
+          <div>
+            <label for="ce" class="block text-xs font-medium text-cream/65 mb-1.5">Email Address</label>
+            <input id="ce" name="email" type="email" required placeholder="you@email.com" class="fi fi-dark">
+          </div>
+        </div>
+        <div>
+          <label for="cs" class="block text-xs font-medium text-cream/65 mb-1.5">Subject</label>
+          <select id="cs" name="subject" class="fi fi-dark">
+            <option>General Enquiry</option>
+            <option>Order Issue / Complaint</option>
+            <option>Event &amp; Catering Booking</option>
+            <option>Office Meal Plan</option>
+            <option>Partnership / Business</option>
+            <option>Feedback &amp; Suggestions</option>
+          </select>
+        </div>
+        <div>
+          <label for="cm" class="block text-xs font-medium text-cream/65 mb-1.5">Message</label>
+          <textarea id="cm" name="message" rows="5" required placeholder="Tell us what's on your mind..."
+            class="fi fi-dark resize-none"></textarea>
+        </div>
+        <button type="submit" class="w-full btn-gold py-4 rounded-full text-sm shadow-lg">
+          📨 Send Message
+        </button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════ -->
+<footer class="sticky bg-forest-dark border-t border-cream/8 text-cream/45 px-5 lg:px-10 py-10">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-xs">
+    <a href="#home" class="flex items-center gap-2 shrink-0">
+      <span class="w-7 h-7 rounded-lg bg-pepper flex items-center justify-center text-cream font-brand text-xs">M</span>
+      <span class="font-brand text-[1.1rem] text-cream/80"><span class="text-cream">Mama</span><span class="text-gold">Put</span></span>
+    </a>
+    <p class="text-center">© 2026 MamaPut Kitchens Ltd. · Cooked with ❤️ in Enugu City, Enugu State, Nigeria.</p>
+    <nav class="flex flex-wrap gap-4 text-cream/55">
+      <a href="#home"    class="hover:text-gold transition-colors">Home</a>
+      <a href="#menu"    class="hover:text-gold transition-colors">Menu</a>
+      <a href="#order"   class="hover:text-gold transition-colors">Order</a>
+      <a href="#package" class="hover:text-gold transition-colors">Packages</a>
+      <a href="#service" class="hover:text-gold transition-colors">Help</a>
+      <a href="#contact" class="hover:text-gold transition-colors">Contact</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+
